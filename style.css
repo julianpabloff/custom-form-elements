@@ -26,7 +26,6 @@ body {
 }
 
 div#container {
-	width: 80vw;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 40px;
@@ -44,7 +43,8 @@ div#container *::selection {
 [type="color"],
 [type="radio"],
 [type="text"] + label,
-[type="range"]
+[type="range"],
+[type="file"]
 {
 	position: absolute;
 	top: auto;
@@ -60,6 +60,7 @@ button,
 [type="color"] + label,
 [type="radio"] + label,
 [type="range"] + label,
+[type="file"] + label,
 div#container div.label-progress-bar span
 {
 	padding: 0.2em 0.7em;
@@ -77,6 +78,8 @@ button:active,
 [type="checkbox"]:focus + label,
 [type="color"] + label:hover,
 [type="color"]:focus + label,
+[type="file"]:not(:disabled) + label:hover,
+[type="file"]:focus + label,
 [type="text"]:hover,
 [type="text"]:focus,
 div#container .activate-border,
@@ -155,10 +158,16 @@ div#container div.label-progress-bar {
 }
 
 div#container div.label-progress-bar span,
-[type="range"] + label {
+[type="file"] + label,
+[type="range"] + label
+{
 	display: block;
 	width: fit-content;
 	min-width: 170px;
 	text-align: center;
 	cursor: default;
+}
+
+[type="file"]:not(:disabled) + label {
+	cursor: pointer;
 }

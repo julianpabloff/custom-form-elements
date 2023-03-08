@@ -1,3 +1,30 @@
+const ProgressBar = function(parentElement, label) {
+	let totalWidth = label.offsetWidth;
+	const labelProgressBar = document.createElement('div');
+	labelProgressBar.className = 'label-progress-bar';
+
+	const span = document.createElement('span');
+	span.innerText = label.innerText;
+	span.style.width = totalWidth.toString() + 'px';
+
+	labelProgressBar.appendChild(span);
+	parentElement.style.position = 'relative';
+	parentElement.appendChild(labelProgressBar);
+
+	this.container = labelProgressBar;
+	this.element = span;
+	this.updateText = function(text) {
+		label.innerText = span.innerText = text;
+		totalWidth = label.offsetWidth;
+		span.style.width = totalWidth.toString() + 'px';
+	}
+	this.handleProgress = function(percentage) {
+		const width = totalWidth * percentage;
+		labelProgressBar.style.width = width.toString() + 'px';
+	}
+	this.reset = () => labelProgressBar.style.width = '0';
+}
+
 window.addEventListener('load', () => {
 	const container = document.getElementById('container');
 	const buttons = container.getElementsByTagName('button');
@@ -20,17 +47,29 @@ window.addEventListener('load', () => {
 	const radioGroupMap = new Map();
 	const rangeStates = {};
 
-	const insertProgressBar = (parentElement, labelTextToCopy) => {
+	const insertProgressBar = (parentElement, label) => {
 		const labelProgressBar = document.createElement('div');
 		labelProgressBar.className = 'label-progress-bar';
+
 		const span = document.createElement('span');
-		span.innerText = labelTextToCopy;
+		span.innerText = label.innerText;
+		span.style.width = label.offsetWidth.toString() + 'px';
+
 		labelProgressBar.appendChild(span);
 		parentElement.style.position = 'relative';
 		parentElement.appendChild(labelProgressBar);
+
 		return {
 			container: labelProgressBar,
-			label: span
+			label: span,
+			updateText: function(text) {
+			},
+			handleProgress: function(percentage) {
+				span.innerText = label.innerText;
+				const width = label.offsetWidth * percentage;
+				labelProgressBar.style.width = width.toString() + 'px';
+			},
+			reset: function() { labelProgressBar.style.width = '0' }
 		}
 	}
 
@@ -64,6 +103,7 @@ window.addEventListener('load', () => {
 			input.checked = false;
 			let group = radioGroupMap.get(input.name);
 			if (!group) {
+				parent.className = 'radio-group';
 				group = { container: parent, inputs: [input] };
 				radioGroupMap.set(input.name, group);
 			}
@@ -77,10 +117,11 @@ window.addEventListener('load', () => {
 			const inputMin = parseInt(input.min || '0');
 			const inputMax = parseInt(input.max || '100');
 			const inputStep = parseInt(input.step || '1');
-			const labelWidth = label.offsetWidth;
 
-			const progressBar = insertProgressBar(parent, label.innerText);
-			const progressLabel = progressBar.label;
+			// const progressBar = insertProgressBar(parent, label);
+			const progressBar = new ProgressBar(parent, label);
+			const progressLabel = progressBar.element;
+			const labelWidth = label.offsetWidth;
 
 			const states = {
 				focus: false,
@@ -103,9 +144,7 @@ window.addEventListener('load', () => {
 
 			const handleRangeInput = () => {
 				const percentage = getPercentage(parseInt(input.value));
-				const width = labelWidth * percentage;
-				progressBar.container.style.width = width.toString() + 'px';
-				// label.innerText = progressLabel.innerText = 'rangeoisdoijsdfoi (' + input.value + ')';
+				progressBar.handleProgress(percentage);
 			}
 			handleRangeInput();
 			input.oninput = handleRangeInput;
@@ -143,6 +182,34 @@ window.addEventListener('load', () => {
 			};
 			label.onmousedown = handleMouseEvents;
 			progressLabel.onmousedown = handleMouseEvents;
+		}
+
+		else if (type == 'file') {
+			// const progressBar = insertProgressBar(parent, label);
+			const progressBar = new ProgressBar(parent, label);
+			input.addEventListener('change', async function() {
+				const file = this.files[0];
+				progressBar.updateText('uploading...');
+				this.disabled = true;
+
+				return new Promise(resolve => {
+					let i = 1;
+					const interval = setInterval(() => {
+						progressBar.handleProgress(i / 100);
+						i++;
+						if (i > 100) {
+							this.disabled = false;
+							progressBar.updateText('done.');
+							progressBar.reset();
+							setTimeout(() => {
+								progressBar.updateText('file');
+							}, 1000);
+							clearInterval(interval);
+							resolve();
+						}
+					}, 20);
+				});
+			});
 		}
 	}
 	console.log(rangeStates);
