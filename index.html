@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="utf-8"/>
+	<title>Custom Form Elements</title>
+	<link rel="stylesheet" href="style.css"/>
+	<script src="main.js"></script>
+</head>
+
+<body>
+	<div id="container">
+		<!-- <div> -->
+		<!-- 	<input id="button" type="button" name="button"> -->
+		<!-- 	<label for="button">button</label> -->
+		<!-- </div> -->
+		<div>
+			<button id="actual-button" type="button">button</button>
+		</div>
+		<div>
+			<input id="checkbox" type="checkbox" name="checkbox">
+			<label for="checkbox">checkbox</label>
+		</div>
+		<div class="radio-group">
+			<input id="radio1" type="radio" name="radio">
+			<label for="radio1">radio1</label>
+			<input id="radio2" type="radio" name="radio">
+			<label for="radio2">radio2</label>
+			<input id="radio3" type="radio" name="radio">
+			<label for="radio3">radio3</label>
+		</div>
+		<div>
+			<input id="text" type="text" name="text" placeholder="type text here">
+			<!-- hide label, style input to match the other labels -->
+			<label for="text">text</label>
+		</div>
+		<div>
+			<input id="range" type="range" min="0" max="69" step="1" name="range">
+			<label for="range">range</label>
+			<!-- <div> -->
+			<!-- 	<span>range</span> -->
+			<!-- </div> -->
+		</div>
+		<div>
+			<!-- hide input, label gets colored oninput -->
+			<input id="color" type="color" name="color">
+			<label for="color">color</label>
+		</div>
+		<!-- <div> -->
+		<!-- 	<input id="date" type="date" name="date"> -->
+		<!-- 	<label for="date">date</label> -->
+		<!-- </div> -->
+		<!-- <div> -->
+		<!-- 	<input id="email" type="email" name="email"> -->
+		<!-- 	<label for="email">email</label> -->
+		<!-- </div> -->
+		<div>
+			<input id="file" type="file" name="file">
+			<label for="file">file selector</label>
+		</div>
+		<!-- <div> -->
+		<!-- 	<input id="number" type="number" name="number"> -->
+		<!-- 	<label for="number">number</label> -->
+		<!-- </div> -->
+		<!-- <div> -->
+		<!-- 	<input id="password" type="password" name="password"> -->
+		<!-- 	<label for="password">password</label> -->
+		<!-- </div> -->
+		<!-- <div> -->
+		<!-- 	<input id="search" type="search" name="search"> -->
+		<!-- 	<label for="search">search</label> -->
+		<!-- </div> -->
+		<!-- <div> -->
+		<!-- 	<input id="tel" type="tel" name="tel"> -->
+		<!-- 	<label for="tel">tel</label> -->
+		<!-- </div> -->
+	</div>
+</body>

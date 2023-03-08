@@ -1,0 +1,164 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+:root {
+	--bright: #1ac393;
+	--dim: #1b798f;
+	--back-drop: #1a434d;
+	--border-thickness: 0.15em;
+}
+
+html {
+	/* font-size: 16px; */
+	font-size: 20px;
+	/* font-size: 24px; */
+}
+
+body {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #1d2240;
+}
+
+div#container {
+	width: 80vw;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 40px;
+	font-family: monospace;
+	color: var(--bright);
+}
+
+div#container *::selection {
+	color: var(--bright);
+	background-color: var(--dim);
+}
+
+/* Hide actual input */
+[type="checkbox"],
+[type="color"],
+[type="radio"],
+[type="text"] + label,
+[type="range"]
+{
+	position: absolute;
+	top: auto;
+	overflow: hidden;
+	clip: rect(1px, 1px, 1px, 1px);
+	width: 1px;
+	height: 1px;
+}
+
+/* General styling */
+button,
+[type="checkbox"] + label,
+[type="color"] + label,
+[type="radio"] + label,
+[type="range"] + label,
+div#container div.label-progress-bar span
+{
+	padding: 0.2em 0.7em;
+	cursor: pointer;
+	user-select: none;
+	border: var(--border-thickness) solid var(--dim);
+	border-radius: 0.3em;
+	background-color: var(--back-drop);
+}
+
+/* Activate the border */
+button:focus,
+button:active,
+[type="checkbox"] + label:hover,
+[type="checkbox"]:focus + label,
+[type="color"] + label:hover,
+[type="color"]:focus + label,
+[type="text"]:hover,
+[type="text"]:focus,
+div#container .activate-border,
+div#container div.radio-group.activate-border label,
+div.radio-group:hover label,
+div#container div.label-progress-bar span.activate-border
+{
+	border-color: var(--bright);
+}
+
+/* Activate the inside */
+button:hover,
+[type="checkbox"]:checked + label,
+[type="radio"]:checked + label,
+div#container .activate-inside,
+div#container div.label-progress-bar span
+{
+	color: var(--back-drop);
+	background-color: var(--bright);
+}
+
+/* Element special cases / normalizing */
+label {
+	display: block;
+	width: fit-content;
+}
+
+button, [type="text"] {
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+}
+
+button:focus, input:focus {
+	outline: none;
+}
+
+[type="color"] + label {
+	/* Will be set by javascript */
+	color: transparent;
+	background-color: transparent;
+}
+
+[type="text"] {
+	padding: 0.2em 0.7em;
+	border: var(--border-thickness) solid var(--dim);
+	border-radius: 0.3em;
+	background-color: var(--back-drop);
+}
+
+div.radio-group {
+	display: flex;
+	align-items: flex-start;
+	align-self: flex-start;
+}
+[type="radio"]:not(:first-of-type) + label {
+	border-left: none;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+[type="radio"]:not(:last-of-type) + label {
+	border-right: none;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+[type="radio"]:not(:checked):focus + label {
+	color: var(--dim);
+}
+
+div#container div.label-progress-bar {
+	width: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+}
+
+div#container div.label-progress-bar span,
+[type="range"] + label {
+	display: block;
+	width: fit-content;
+	min-width: 170px;
+	text-align: center;
+	cursor: default;
+}
